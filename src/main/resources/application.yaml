@@ -2,6 +2,11 @@ server:
   port: 9090
   
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/auth/realms/crud-demo/protocol/openid-connect/certs
   datasource:
     url: jdbc:h2:file:~/test
     data-username: sa
