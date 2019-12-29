@@ -13,7 +13,12 @@ $ export TOKEN=$(curl -H "Content-Type: application/x-www-form-urlencoded" \
 $ echo $TOKEN
 ```
 
-## Make request with Token
+## Public Request with Token
 ```bash
-$ curl -i -X GET -H "Authorization: Bearer $TOKEN" http://localhost:9090/posts
+$ curl -X GET http://localhost:9090/public/posts
+```
+
+## Authenticated Request with Token
+```bash
+$ curl -i -X GET -H "Authorization: Bearer $TOKEN" http://localhost:9090/api/posts
 ```

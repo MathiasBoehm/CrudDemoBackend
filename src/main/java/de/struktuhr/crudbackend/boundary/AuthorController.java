@@ -10,7 +10,7 @@ import de.struktuhr.crudbackend.control.AuthorService;
 import de.struktuhr.crudbackend.entity.Author;
 
 @RestController
-@RequestMapping(value = "/authors")
+@RequestMapping(value = "/api/authors")
 public class AuthorController {
 
     private final AuthorService authorService;

@@ -19,7 +19,7 @@ import de.struktuhr.crudbackend.control.PostService;
 import de.struktuhr.crudbackend.entity.Post;
 
 @RestController
-@RequestMapping(value = "/posts")
+@RequestMapping(value = "/api/posts")
 public class PostController {
 
     private final PostService postService;

@@ -11,8 +11,8 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http.cors().and()
                 .authorizeRequests()
-                .mvcMatchers("/posts/**").hasAuthority("SCOPE_posts")
-                .mvcMatchers("/authors/**").hasAuthority("SCOPE_posts")
+                .mvcMatchers("/public/**").permitAll()
+                .mvcMatchers("/api/**").hasAuthority("SCOPE_posts")
                 .anyRequest().denyAll()
                 .and()
                 .oauth2ResourceServer()
