@@ -20,9 +20,9 @@ public class MainController {
         this.postService = postService;
     }
 
-    @GetMapping("posts")
-    public List<Post> findAll() {
-        final List<Post> posts = postService.findAll();
+    @GetMapping("recent-posts")
+    public List<Post> recentPosts() {
+        final List<Post> posts = postService.findRecentPosts();
         return posts;
     }
     

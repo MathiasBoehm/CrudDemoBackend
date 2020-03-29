@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,25 +26,33 @@ public class PostService {
 
     public PostService(PostRepo postRepo) {
         this.postRepo = postRepo;
-    }
+	}
+	
+	public List<Post> findRecentPosts() {
+		Pageable pageable = buildPageable("created", "desc", 0, 10);
+		Page<Post> pagePosts = postRepo.findAll(pageable);
+		return pagePosts.getContent();
+	}
 
 	public List<Post> findAll() {
 		return postRepo.findAll();
 	}
 
-	public long countAll() {
-		long count = postRepo.count();
+	public long count(String title, String author) {
+		final Example<Post> example = buildExample(title, author);
+		long count = postRepo.count(example);
 		return count;
 	}
 
-	public List<Post> find(String sortField, String order, Integer page, Integer size) {
+	public List<Post> find(String title, String author, String sortField, String order, Integer page, Integer size) {
+		final Example<Post> example = buildExample(title, author);
 		if (page != null && size != null && size > 0) {
 			Pageable pageable = buildPageable(sortField, order, page, size);
-			Page<Post> pagePosts = postRepo.findAll(pageable);
+			Page<Post> pagePosts = postRepo.findAll(example, pageable);
 			return pagePosts.getContent();
 		}
 		else {
-			return postRepo.findAll();
+			return postRepo.findAll(example);
 		}
 	}
 
@@ -108,5 +118,16 @@ public class PostService {
 	
 	private Post internalGetPost(Long id) {
         return postRepo.findById(id).orElseThrow(() -> new NotFoundException("Cannot find Post with id " + id));
+	}
+
+	private Example<Post> buildExample(String title, String author) {
+		Post post = new Post();
+        post.setTitle(title != null && title.length() > 0 ? title : null);
+        post.setAuthor(author != null && author.length() > 0 ? author : null);
+
+        ExampleMatcher matcher = ExampleMatcher.matchingAll()
+			.withMatcher("title", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase());
+			
+		return Example.of(post, matcher);
 	}
 }
