@@ -15,7 +15,7 @@ $ echo $TOKEN
 
 ## Public Request with Token
 ```bash
-$ curl -X GET http://localhost:9090/public/posts
+$ curl -X GET http://localhost:9090/public/recent-posts
 ```
 
 ## Authenticated Request with Token
