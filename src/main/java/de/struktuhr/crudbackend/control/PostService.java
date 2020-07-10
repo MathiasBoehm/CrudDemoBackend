@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import de.struktuhr.crudbackend.event.MyApplicationEventPublisher;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -21,16 +22,21 @@ import de.struktuhr.crudbackend.repo.PostRepo;
 @Service
 public class PostService {
 
+	private final PostRepo postRepo;
 
-    private final PostRepo postRepo;
+	private final MyApplicationEventPublisher myApplicationEventPublisher;
 
-    public PostService(PostRepo postRepo) {
+    public PostService(PostRepo postRepo, MyApplicationEventPublisher myApplicationEventPublisher) {
         this.postRepo = postRepo;
+		this.myApplicationEventPublisher = myApplicationEventPublisher;
 	}
 	
 	public List<Post> findRecentPosts() {
 		Pageable pageable = buildPageable("created", "desc", 0, 10);
 		Page<Post> pagePosts = postRepo.findAll(pageable);
+
+		myApplicationEventPublisher.publishMessage("Recent Posts count is " + pagePosts.getTotalElements());
+
 		return pagePosts.getContent();
 	}
 
@@ -41,6 +47,7 @@ public class PostService {
 	public long count(String title, String author) {
 		final Example<Post> example = buildExample(title, author);
 		long count = postRepo.count(example);
+		myApplicationEventPublisher.publishMessage("Count is " + count);
 		return count;
 	}
 
@@ -64,8 +71,12 @@ public class PostService {
 		validate(post);
 
 		post.setCreated(LocalDate.now());
-		
-		return postRepo.saveAndFlush(post);
+
+		Post createdPost = postRepo.saveAndFlush(post);
+
+		myApplicationEventPublisher.publishMessage("Post " + createdPost.getContent() + " created with id " + createdPost.getId());
+
+		return createdPost;
 	}
 
 	public void delete(Long id) {
