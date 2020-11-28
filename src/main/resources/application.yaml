@@ -8,7 +8,7 @@ spring:
         jwt:
           jwk-set-uri: http://localhost:8080/auth/realms/crud-demo/protocol/openid-connect/certs
   datasource:
-    url: jdbc:h2:file:~/test
+    url: jdbc:h2:mem:blogs
     data-username: sa
     data-password:
     driver-class-name: org.h2.Driver

@@ -28,7 +28,7 @@ public class CrudBackendApplication {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.addAllowedOrigin("*");
+		config.addAllowedOrigin("http://localhost:4200");
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("OPTIONS");
 		config.addAllowedMethod("GET");
@@ -41,7 +41,8 @@ public class CrudBackendApplication {
 
 	@EventListener
 	public void onApplicationStarted(ApplicationStartedEvent event) {
-		exampleData.createExampleData();
+		// Data is created by data.sql
+		// exampleData.createExampleData();
 	}
 
 	@Bean(name = "applicationEventMulticaster")

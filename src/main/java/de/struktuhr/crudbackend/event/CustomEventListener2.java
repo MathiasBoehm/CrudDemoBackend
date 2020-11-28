@@ -6,14 +6,14 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomEventListener implements ApplicationListener<CustomEvent> {
+public class CustomEventListener2 implements ApplicationListener<CustomEvent> {
 
-    private final static Logger logger = LoggerFactory.getLogger(CustomEventListener.class);
+    private final static Logger logger = LoggerFactory.getLogger(CustomEventListener2.class);
 
     @Override
     public void onApplicationEvent(CustomEvent customEvent) {
         try {
-            Thread.sleep(2500);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
