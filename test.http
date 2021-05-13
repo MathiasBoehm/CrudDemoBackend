@@ -1,0 +1,27 @@
+###
+# Definitions
+@TOKEN_ENDPOINT=http://localhost:8080/auth/realms/crud-demo/protocol/openid-connect/token
+@SERVICE_URL=http://localhost:9090
+
+
+###
+# @name tokenResponse
+POST {{TOKEN_ENDPOINT}}
+Content-Type: application/x-www-form-urlencoded
+
+client_id=spa-crud
+&username=jdoe
+&password=password
+&grant_type=password
+
+# Extract Token
+@ACCESS_TOKEN={{tokenResponse.response.body.access_token}}
+
+###
+# @name recentPosts
+GET {{SERVICE_URL}}/public/recent-posts
+
+###
+# @name apiPosts
+GET {{SERVICE_URL}}/api/posts
+Authorization: Bearer {{ACCESS_TOKEN}}
